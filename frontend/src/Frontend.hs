@@ -27,11 +27,11 @@ menu :: DomBuilder t m => m ()
 menu = do
   el "ul" $ do
     el "li" $ do
-      el "a" (text "Início")
+      elAttr "a" ("href" =: "#") (text "Início")
     el "li" $ do
-      el "a" (text "Indicações")
+      elAttr "a" ("href" =: "#") (text "Indicações")
     el "li" $ do
-      el "a" (text "Sobre")
+      elAttr "a" ("href" =: "#") (text "Sobre")
 
 -- buttons :: DomBuilder t m => m ()
 -- buttons = do
@@ -48,9 +48,14 @@ frontend :: Frontend (R FrontendRoute)
 frontend = Frontend
   { _frontend_head = do
       el "title" $ text "Fatec Indica"
+      elAttr "link" ("href" =: $(static "bootstrap.css") <> "type" =: "text/css" <> "rel" =: "stylesheet") blank
+      elAttr "link" ("href" =: $(static "bootstrap.css.map") <> "type" =: "text/css" <> "rel" =: "stylesheet") blank
       elAttr "link" ("href" =: $(static "main.css") <> "type" =: "text/css" <> "rel" =: "stylesheet") blank
-      elAttr "link" ("href" =: $(static "bootstrap.css") <> "type" =: "text/css" <> "rel" =: "stylesheet") blank
-      elAttr "link" ("href" =: $(static "bootstrap.css") <> "type" =: "text/css" <> "rel" =: "stylesheet") blank
+      
+      elAttr "script" ("src" =: $(static "jquery.min.js")) blank
+      elAttr "script" ("src" =: $(static "bootstrap.js")) blank
+      elAttr "script" ("src" =: $(static "bootstrap.js.map")) blank
+      elAttr "script" ("src" =: $(static "main.js")) blank
   , _frontend_body = do
       -- el "h1" $ text "Welcome to Obelisk!"
       -- el "p" $ text $ T.pack commonStuff
@@ -68,17 +73,33 @@ frontend = Frontend
         --   Nothing -> text "No config file found in config/common/example"
         --   Just s -> text $ T.decodeUtf8 s
         
-      el "header" $ do
+      elAttr "header" ("class" =: "header") $ do
         el "div" $ do
-          elAttr "img" ("src" =: $(static "banner.png") <> ("class" =: "card-img"))  blank
+          elAttr "a" ("href" =: "#") $ do
+            elAttr "img" ("src" =: $(static "fatecindicafi.png") <> ("class" =: "card-img"))  blank
         menu
       
-      elAttr "main" ("class" =: "container") $ do
+      elAttr "main" ("class" =: "container-fluid") $ do
         elAttr "div" ("class" =: "row" <> "id" =: "inicio") $ do
-           elAttr "div" ("class" =: "col-md-12") $ do
-              elAttr "div" ("class" =: "carousel" <> "class" =: "slide" <> "data-ride" =: "carousel") $ do
-                el "p" (text "Carousel")
-
+           elAttr "div" ("class" =: "col") $ do
+              elAttr "div" ("class" =: "carousel slide" <> "data-ride" =: "carousel" <> "id" =: "carrossel") $ do
+                elAttr "ol" ("class" =: "carousel-indicators") $ do
+                  elAttr "li" ("data-target" =: "carrossel" <> "data-slide-to" =: "0" <> "class" =: "active") blank
+                  elAttr "li" ("data-target" =: "carrossel" <> "data-slide-to" =: "1") blank
+                  elAttr "li" ("data-target" =: "carrossel" <> "data-slide-to" =: "2") blank
+                elAttr "div" ("class" =: "carousel-inner") $ do
+                  elAttr "div" ("class" =: "carousel-item active") $ do
+                    elAttr "img" ("src" =: $(static "BANNER1.png") <> ("class" =: "d-block" <> "class" =: "w-100")) blank
+                  elAttr "div" ("class" =: "carousel-item") $ do
+                    elAttr "img" ("src" =: $(static "BANNER2.png") <> ("class" =: "d-block" <> "class" =: "w-100")) blank
+                  elAttr "div" ("class" =: "carousel-item") $ do
+                    elAttr "img" ("src" =: $(static "BANNER3.png") <> ("class" =: "d-block" <> "class" =: "w-100")) blank
+                elAttr "a" ("class" =: "carousel-control-prev" <> "href" =: "#carrossel" <> "role" =: "button" <> "data-slide" =: "prev") $ do
+                  elAttr "span" ("class" =: "carousel-control-prev-icon" <> "aria-hidden" =: "true") blank
+                  elAttr "span" ("class" =: "sr-only") (text "Anterior")
+                elAttr "a" ("class" =: "carousel-control-next" <> "href" =: "#carrossel" <> "role" =: "button" <> "data-slide" =: "next") $ do
+                  elAttr "span" ("class" =: "carousel-control-next-icon" <> "aria-hidden" =: "true") blank
+                  elAttr "span" ("class" =: "sr-only") (text "Próximo")
 
 
       return ()

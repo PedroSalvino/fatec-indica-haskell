@@ -21,7 +21,7 @@ html{
 	font-family: "Open Sans", sans-serif;
 	font-size: 1.1rem;
 }
-header{
+.header{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -30,26 +30,26 @@ header{
 	top: 0;
 	z-index: 3;
 }
-header>ul{
+.header>ul{
 	display: flex;
 	margin-right: 50px;
 }
-header>ul>li{
+.header>ul>li{
 	margin: 0px 5px;
 }
 
-main>.row{
+.main>.row{
 	background-color: #f7efcd;
 	border-top: 3px solid #fffbe6;
 }
 
-main>div:nth-child(1){
+.main>div:nth-child(1){
 	background-color: var(--light);
 }
-main{
+.main{
 	background-color: #f7efcd; 
 }
-main>div:last-child{
+.main>div:last-child{
 	background-color: var(--primary);
 }
 footer{
@@ -72,7 +72,7 @@ h3{
 .modal-body{
 	background-color: var(--light);
 }
-.modal-header{
+.modal-.header{
 	background-color: var(--dark);
 }
 .modal-body p{
