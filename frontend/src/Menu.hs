@@ -24,8 +24,9 @@ import Control.Monad.Fix
 import Auxiliar
 import Homepage
 import Indicacoes
+import AddIndica
 
-data Pagina = Pagina0 | Pagina1 | Pagina2
+data Pagina = Pagina0 | Pagina1 | Pagina2 | Pagina3
 
 clickLi :: DomBuilder t m => Pagina -> T.Text -> m (Event t Pagina)
 clickLi p t = do
@@ -41,19 +42,16 @@ menuLi = do
         el "ul" $ do
             p1 <- clickLi Pagina1 "Home"
             p2 <- clickLi Pagina2 "Indicações"
-            return (leftmost [p1,p2])
+            p3 <- clickLi Pagina3 "Faça sua Indicação"
+            return (leftmost [p1,p2,p3])
     holdDyn Pagina0 evs
-
-    -- evs <- el "ul" $ do
-    --     p1 <- clickLi Pagina1 "Home"
-    --     return (leftmost [p1])
-    -- holdDyn Pagina0 evs
 
 currPag :: (DomBuilder t m, MonadHold t m, PostBuild t m, MonadFix m) => Pagina -> m ()
 currPag p = case p of
     Pagina0 -> main
     Pagina1 -> main
     Pagina2 -> indica
+    Pagina3 -> formIndica
 
 mainPag :: (DomBuilder t m, MonadHold t m, PostBuild t m, MonadFix m) => m ()
 mainPag = do

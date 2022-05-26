@@ -61,7 +61,7 @@ footer>p{
 	margin-top: 6px;
 }
 
-h2, legend{
+h1, h2, legend{
 	color: var(--secondary);
 	padding-bottom: 5px;
 	font-size: 1.5rem;
@@ -107,4 +107,22 @@ video{
 
 a>img{
 	border-radius: 15px;
+}
+
+.area-form{
+	border: solid 2px var(--secondary);
+	border-radius: 25px;
+	padding: 30px;
+}
+
+input, textarea{
+	border: solid 1px var(--secondary);
+	border-radius: 25px;
+	width: 70%;
+	padding: 10px 15px;
+	resize: none;
+}
+
+label{
+	color: var(--dark);
 }

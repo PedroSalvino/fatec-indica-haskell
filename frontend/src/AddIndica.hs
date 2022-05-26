@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-module Indicacoes where
+module AddIndica where
 
 import Control.Monad
 import qualified Data.Text as T
@@ -17,3 +17,24 @@ import Reflex.Dom.Core
 
 import Common.Api
 import Common.Route
+
+import Auxiliar
+
+formIndica :: (DomBuilder t m, PostBuild t m, MonadHold t m) => m ()
+formIndica = do
+    elAttr "main" ("class" =: "container-fluid my-2") $ do
+        elAttr "div" ("class" =: "row" <> "id" =: "inicio") $ do
+            elAttr "div" ("class" =: "col") $ do
+                elAttr "h1" ("class" =: "h3 text-center my-2") (text "Faça sua indicação!")
+                
+                elAttr "div" ("class" =: "row") $ do
+                    elAttr "div" ("class" =: "col-md-10 mx-auto text-center area-form") $ do
+                    
+                    campoNome
+                    campoImagem
+                    campoDiretor
+                    campoElenco
+                    campoDesc
+                    
+                    botaoEnviar
+                return ()
