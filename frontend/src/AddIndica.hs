@@ -20,7 +20,7 @@ import Common.Route
 
 import Auxiliar
 
-formIndica :: (DomBuilder t m, PostBuild t m, MonadHold t m) => m ()
+formIndica :: (DomBuilder t m, PostBuild t m, MonadHold t m, Prerender t m) => m ()
 formIndica = do
     elAttr "main" ("class" =: "container-fluid my-2") $ do
         elAttr "div" ("class" =: "row" <> "id" =: "inicio") $ do
@@ -30,11 +30,6 @@ formIndica = do
                 elAttr "div" ("class" =: "row") $ do
                     elAttr "div" ("class" =: "col-md-10 mx-auto text-center area-form") $ do
                     
-                    campoNome
-                    campoImagem
-                    campoDiretor
-                    campoElenco
-                    campoDesc
-                    
-                    botaoEnviar
+                    reqFilme
+
                 return ()

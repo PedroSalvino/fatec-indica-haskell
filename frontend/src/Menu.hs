@@ -46,14 +46,14 @@ menuLi = do
             return (leftmost [p1,p2,p3])
     holdDyn Pagina0 evs
 
-currPag :: (DomBuilder t m, MonadHold t m, PostBuild t m, MonadFix m) => Pagina -> m ()
+currPag :: (DomBuilder t m, MonadHold t m, PostBuild t m, MonadFix m, Prerender t m) => Pagina -> m ()
 currPag p = case p of
     Pagina0 -> main
     Pagina1 -> main
     Pagina2 -> indica
     Pagina3 -> formIndica
 
-mainPag :: (DomBuilder t m, MonadHold t m, PostBuild t m, MonadFix m) => m ()
+mainPag :: (DomBuilder t m, MonadHold t m, PostBuild t m, MonadFix m, Prerender t m) => m ()
 mainPag = do
     pag <- menuLi
     dyn_ $ currPag <$> pag

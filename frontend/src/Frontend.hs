@@ -1,5 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 
 module Frontend where
 
@@ -18,11 +19,24 @@ import Reflex.Dom.Core
 import Common.Api
 import Common.Route
 import Menu
-
+import Control.Monad.Fix
+import qualified Data.Aeson as A
+import Data.Aeson
 
 -- This runs in a monad that can be run on the client or the server.
 -- To run code in a pure client or pure server context, use one of the
 -- `prerender` functions.
+
+-- req :: ( DomBuilder t m, Prerender t m) => m ()
+-- req = do
+--     inputEl <- inputElement def
+--     (submitBtn,_) <- el' "button" (text "Inserir")
+--     let click = domEvent Click submitBtn
+--     let nm = tag (current $ _inputElement_value inputEl) click  
+--     _ :: Dynamic t (Event t (Maybe T.Text)) <- prerender
+--         (pure never)
+--         (fmap decodeXhrResponse <$> performRequestAsync (nomeRequest <$> nm))
+--     return ()
 
 frontend :: Frontend (R FrontendRoute)
 frontend = Frontend
