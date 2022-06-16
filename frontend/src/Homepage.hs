@@ -17,9 +17,11 @@ import Reflex.Dom.Core
 
 import Common.Api
 import Common.Route
+import Control.Monad.Fix
 
+import Auxiliar
 
-main :: (DomBuilder t m, PostBuild t m, MonadHold t m) => m ()
+main :: (DomBuilder t m, PostBuild t m, MonadHold t m, MonadFix m, Prerender t m) => m ()
 main = do
       elAttr "main" ("class" =: "container-fluid my-2") $ do
         elAttr "div" ("class" =: "row" <> "id" =: "inicio") $ do
@@ -47,49 +49,9 @@ main = do
             el "h2" (text "Indicação dos Editores")  
 
             elAttr "div" ("class" =: "row") $ do
-              elAttr "div" ("class" =: "col") $ do
-                -- Filme 1
-                elAttr "a" ("href" =: "#" <> "data-toggle" =: "modal" <> "data-target" =: "#filmeModal" <> "id" =: "filme1") $ do
-                  elAttr "div" ("class" =: "card bg-dark") $ do
-                    elAttr "img" ("src" =: "https://dummyimage.com/600x400/b01116/000" <> "class" =: "card-img" <> "id" =: "foto1") blank
-                    elAttr "div" ("class" =: "card-body") $ do
-                      elAttr "p" ("class" =: "card-title text-center" <> "id" =: "titulo1") (text "Filme 1")
-              elAttr "div" ("class" =: "col") $ do
-                -- Filme 1
-                elAttr "a" ("href" =: "#" <> "data-toggle" =: "modal" <> "data-target" =: "#filmeModal" <> "id" =: "filme2") $ do
-                  elAttr "div" ("class" =: "card bg-dark") $ do
-                    elAttr "img" ("src" =: "https://dummyimage.com/600x400/b01116/000" <> "class" =: "card-img" <> "id" =: "foto2") blank
-                    elAttr "div" ("class" =: "card-body") $ do
-                      elAttr "p" ("class" =: "card-title text-center" <> "id" =: "titulo1") (text "Filme 2")
-              elAttr "div" ("class" =: "col") $ do
-                -- Filme 1
-                elAttr "a" ("href" =: "#" <> "data-toggle" =: "modal" <> "data-target" =: "#filmeModal" <> "id" =: "filme3") $ do
-                  elAttr "div" ("class" =: "card bg-dark") $ do
-                    elAttr "img" ("src" =: "https://dummyimage.com/600x400/b01116/000" <> "class" =: "card-img" <> "id" =: "foto3") blank
-                    elAttr "div" ("class" =: "card-body") $ do
-                      elAttr "p" ("class" =: "card-title text-center" <> "id" =: "titulo1") (text "Filme 3")
-            elAttr "div" ("class" =: "row my-3") $ do
-              elAttr "div" ("class" =: "col") $ do
-                -- Filme 1
-                elAttr "a" ("href" =: "#" <> "data-toggle" =: "modal" <> "data-target" =: "#filmeModal" <> "id" =: "filme4") $ do
-                  elAttr "div" ("class" =: "card bg-dark") $ do
-                    elAttr "img" ("src" =: "https://dummyimage.com/600x400/b01116/000" <> "class" =: "card-img" <> "id" =: "foto4") blank
-                    elAttr "div" ("class" =: "card-body") $ do
-                      elAttr "p" ("class" =: "card-title text-center" <> "id" =: "titulo1") (text "Filme 4")
-              elAttr "div" ("class" =: "col") $ do
-                -- Filme 1
-                elAttr "a" ("href" =: "#" <> "data-toggle" =: "modal" <> "data-target" =: "#filmeModal" <> "id" =: "filme5") $ do
-                  elAttr "div" ("class" =: "card bg-dark") $ do
-                    elAttr "img" ("src" =: "https://dummyimage.com/600x400/b01116/000" <> "class" =: "card-img" <> "id" =: "foto5") blank
-                    elAttr "div" ("class" =: "card-body") $ do
-                      elAttr "p" ("class" =: "card-title text-center" <> "id" =: "titulo1") (text "Filme 5")
-              elAttr "div" ("class" =: "col") $ do
-                -- Filme 1
-                elAttr "a" ("href" =: "#" <> "data-toggle" =: "modal" <> "data-target" =: "#filmeModal" <> "id" =: "filme6") $ do
-                  elAttr "div" ("class" =: "card bg-dark") $ do
-                    elAttr "img" ("src" =: "https://dummyimage.com/600x400/b01116/000" <> "class" =: "card-img" <> "id" =: "foto6") blank
-                    elAttr "div" ("class" =: "card-body") $ do
-                      elAttr "p" ("class" =: "card-title text-center" <> "id" =: "titulo1") (text "Filme 6")
+              reqListar
+        
+        el "hr" blank
 
         elAttr "div" ("class" =: "row py-auto mx-5" <> "id" =: "sobre") $ do
           el "h2" (text "Sobre o Projeto")

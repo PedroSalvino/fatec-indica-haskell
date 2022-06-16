@@ -98,6 +98,28 @@ reqLista = do
 
     dyn_ (fmap sequence (ffor dynP (fmap cardFilme)))
 
+
+cardFilmes :: DomBuilder t m => Filme -> m ()
+cardFilmes ff = do
+    elAttr "div" ("class" =: "col-md-4 my-2") $ do
+        elAttr "div" ("class" =: "card bg-dark") $ do
+            elAttr "img" ("src" =: (filmeImagem ff)  <> "class" =: "card-img") blank
+            elAttr "div" ("class" =: "card-body") $ do
+                elAttr "p" ("class" =: "card-title text-center") (text $ filmeNome ff)
+
+reqListar :: ( DomBuilder t m, Prerender t m, MonadHold t m, MonadFix m, PostBuild t m) => m ()
+reqListar = do
+    (btn, _) <- elAttr' "button" ("class" =: "btn btn-secondary btn-block mx-auto my-3") (text "Ver Indicações")
+    let click = domEvent Click btn
+    prods :: Dynamic t (Event t (Maybe [Filme])) <- prerender
+        (pure never)
+        (fmap decodeXhrResponse <$> performRequestAsync (const getListReq <$> click))
+    dynP <- foldDyn (\ps d -> case ps of
+                        Nothing -> []
+                        Just p -> d++p) [] (switchDyn prods)
+
+    dyn_ (fmap sequence (ffor dynP (fmap cardFilmes)))
+
 textoInput :: (DomBuilder t m, PostBuild t m) => m ()
 textoInput = do
     el "div" $ do
