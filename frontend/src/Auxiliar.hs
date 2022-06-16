@@ -34,19 +34,60 @@ sendRequest r dados = postJson (getPath r) dados
 getListReq :: XhrRequest ()
 getListReq = xhrRequest "GET" (getPath (BackendRoute_Listar :/ ())) def
 
-tabFilme :: DomBuilder t m => Filme -> m ()
-tabFilme ff = do
-    el "tr" $ do
-        el "td" (text $ T.pack $ show $ filmeId ff)
-        el "td" (text $ filmeNome ff)
-        el "td" (text $ T.pack $ show $ filmeImagem ff)
-        el "td" (text $ T.pack $ show $ filmeDiretor ff)
-        el "td" (text $ T.pack $ show $ filmeElenco ff)
-        el "td" (text $ T.pack $ show $ filmeDescricao ff)
+-- tabFilme :: DomBuilder t m => Filme -> m ()
+-- tabFilme ff = do
+--     el "tr" $ do
+--         el "td" (text $ T.pack $ show $ filmeId ff)
+--         el "td" (text $ filmeNome ff)
+--         el "td" (text $ T.pack $ show $ filmeImagem ff)
+--         el "td" (text $ T.pack $ show $ filmeDiretor ff)
+--         el "td" (text $ T.pack $ show $ filmeElenco ff)
+--         el "td" (text $ T.pack $ show $ filmeDescricao ff)
 
+-- reqLista :: ( DomBuilder t m, Prerender t m, MonadHold t m, MonadFix m, PostBuild t m) => m ()
+-- reqLista = do
+--     (btn, _) <- el' "button" (text "Listar")
+--     let click = domEvent Click btn
+--     prods :: Dynamic t (Event t (Maybe [Filme])) <- prerender
+--         (pure never)
+--         (fmap decodeXhrResponse <$> performRequestAsync (const getListReq <$> click))
+--     dynP <- foldDyn (\ps d -> case ps of
+--                         Nothing -> []
+--                         Just p -> d++p) [] (switchDyn prods)
+--     el "table" $ do
+--         el "thead" $ do
+--             el "tr" $ do
+--                 el "th" (text "Id")
+--                 el "th" (text "Nome")
+--                 el "th" (text "Imagem")
+--                 el "th" (text "Diretor")
+--                 el "th" (text "Elenco")
+--                 el "th" (text "Descrição")
+--         el "tbody" $ do
+--             dyn_ (fmap sequence (ffor dynP (fmap tabFilme)))
+
+cardFilme :: DomBuilder t m => Filme -> m ()
+cardFilme ff = do
+    elAttr "div" ("class" =: "card my-2" <> "style" =: "height: auto") $ do
+        elAttr "div" ("class" =: "row") $ do
+            elAttr "div" ("class" =: "col-md-4") $ do
+                elAttr "img" ("src" =: (filmeImagem ff)  <> "class" =: "card-img") blank
+            elAttr "div" ("class" =: "col-md-8") $ do
+                elAttr "div" ("class" =: "card-body") $ do
+                    elAttr "h2" ("class" =: "text-center") (text $ filmeNome ff)
+
+                    elAttr "h3" ("class" =: "text-primary h4") (text "Diretor")
+                    elAttr "p" ("class" =: "card-text") (text $ filmeDiretor ff)
+                    
+                    elAttr "h3" ("class" =: "text-primary h4") (text "Elenco")
+                    elAttr "p" ("class" =: "card-text") (text $ filmeElenco ff)
+                    
+                    elAttr "h3" ("class" =: "text-primary") (text "Sinopse")
+                    elAttr "p" ("class" =: "card-text") (text $ T.pack $ show $ filmeDescricao ff)
+                    
 reqLista :: ( DomBuilder t m, Prerender t m, MonadHold t m, MonadFix m, PostBuild t m) => m ()
 reqLista = do
-    (btn, _) <- el' "button" (text "Listar")
+    (btn, _) <- elAttr' "button" ("class" =: "btn btn-primary btn-block col-8 mx-auto my-3") (text "Listar Indicações")
     let click = domEvent Click btn
     prods :: Dynamic t (Event t (Maybe [Filme])) <- prerender
         (pure never)
@@ -54,17 +95,8 @@ reqLista = do
     dynP <- foldDyn (\ps d -> case ps of
                         Nothing -> []
                         Just p -> d++p) [] (switchDyn prods)
-    el "table" $ do
-        el "thead" $ do
-            el "tr" $ do
-                el "th" (text "Id")
-                el "th" (text "Nome")
-                el "th" (text "Imagem")
-                el "th" (text "Diretor")
-                el "th" (text "Elenco")
-                el "th" (text "Descrição")
-        el "tbody" $ do
-            dyn_ (fmap sequence (ffor dynP (fmap tabFilme)))
+
+    dyn_ (fmap sequence (ffor dynP (fmap cardFilme)))
 
 textoInput :: (DomBuilder t m, PostBuild t m) => m ()
 textoInput = do
